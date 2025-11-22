@@ -6,5 +6,3 @@ public enum Especialidade {
     GINECOLOGIA,
     ORTOPEDIA;
 }
-
-

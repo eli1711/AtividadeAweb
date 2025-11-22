@@ -3,15 +3,7 @@ package com.medpro.medpro.model.entity;
 import com.medpro.medpro.enums.Especialidade;
 import com.medpro.medpro.model.DTO.DadosAtualizacaoMedico;
 import com.medpro.medpro.model.DTO.DadosCadastroMedico;
-
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,8 +16,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Medico {
-
-   
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +31,9 @@ public class Medico {
 
     @Embedded
     private Endereco endereco;
+
     private Boolean ativo;
+
     public Medico(DadosCadastroMedico dados) {
         this.nome = dados.nome();
         this.email = dados.email();
@@ -52,24 +44,23 @@ public class Medico {
         this.ativo = true;
     }
 
-    public void atualizarInformações(DadosAtualizacaoMedico dados){
-        if(dados.nome() != null){
-            if(dados.nome().isBlank())
-                throw new IllegalArgumentException(" nome não pode estar em branco");
+    public void atualizarInformações(DadosAtualizacaoMedico dados) {
+        if (dados.nome() != null) {
+            if (dados.nome().isBlank())
+                throw new IllegalArgumentException("nome não pode estar em branco");
             this.nome = dados.nome();
         }
-        if(dados.telefone() != null){
-            if(dados.telefone().isBlank())
+        if (dados.telefone() != null) {
+            if (dados.telefone().isBlank())
                 throw new IllegalArgumentException("telefone não pode estar em branco");
             this.telefone = dados.telefone();
         }
-        if(dados.endereco() != null){
+        if (dados.endereco() != null) {
             this.endereco.atualizarInformações(dados.endereco());
         }
     }
 
-    public void excluir(){
+    public void excluir() {
         this.ativo = false;
     }
-
 }

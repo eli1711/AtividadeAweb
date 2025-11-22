@@ -1,10 +1,10 @@
--- TABELA MEDICOS
-CREATE TABLE medicos (
+-- TABELA PACIENTES
+CREATE TABLE pacientes (
     id BIGINT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
-    crm VARCHAR(6) NOT NULL UNIQUE,
-    especialidade VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20) NOT NULL,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
     logradouro VARCHAR(100) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
     cep VARCHAR(9) NOT NULL,
@@ -12,7 +12,6 @@ CREATE TABLE medicos (
     numero VARCHAR(20),
     uf CHAR(2) NOT NULL,
     cidade VARCHAR(100) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    ativo TINYINT(1) NOT NULL DEFAULT 1,
+    status VARCHAR(10) NOT NULL DEFAULT 'ATIVO',
     PRIMARY KEY(id)
 );

@@ -1,7 +1,6 @@
 package com.medpro.medpro.model.entity;
 
 import com.medpro.medpro.model.DTO.DadosEndereco;
-
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,8 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Endereco {
-    
-    
+
     private String logradouro;
     private String bairro;
     private String cep;
@@ -26,49 +24,48 @@ public class Endereco {
         this.logradouro = endereco.logradouro();
         this.bairro = endereco.bairro();
         this.cep = endereco.cep();
-        this.cidade =endereco.cidade();
+        this.cidade = endereco.cidade();
         this.uf = endereco.uf();
         this.numero = endereco.numero();
         this.complemento = endereco.complemento();
     }
 
     public void atualizarInformações(DadosEndereco dados) {
-        if(dados.logradouro() != null){
-            if(dados.logradouro().isBlank())
+        if (dados.logradouro() != null) {
+            if (dados.logradouro().isBlank())
                 throw new IllegalArgumentException("logradouro não pode ser nulo");
             else
                 this.logradouro = dados.logradouro();
         }
-        if(dados.bairro() != null){
-            if(dados.bairro().isBlank())
+        if (dados.bairro() != null) {
+            if (dados.bairro().isBlank())
                 throw new IllegalArgumentException("bairro não pode ser nulo");
             else
                 this.bairro = dados.bairro();
         }
-        if(dados.cep() != null){
-            if(dados.cep().isBlank())
+        if (dados.cep() != null) {
+            if (dados.cep().isBlank())
                 throw new IllegalArgumentException("cep não pode ser nulo");
             else
                 this.cep = dados.cep();
         }
-        if(dados.cidade() != null){
-            if(dados.cidade().isBlank())
+        if (dados.cidade() != null) {
+            if (dados.cidade().isBlank())
                 throw new IllegalArgumentException("cidade não pode ser nulo");
             else
                 this.cidade = dados.cidade();
         }
-        if(dados.uf() != null){
-            if(dados.uf().isBlank())
+        if (dados.uf() != null) {
+            if (dados.uf().isBlank())
                 throw new IllegalArgumentException("uf não pode ser nulo");
             else
                 this.uf = dados.uf();
         }
-        if(dados.numero() != null){
+        if (dados.numero() != null) {
             this.numero = dados.numero();
         }
-        if(dados.complemento() != null){
+        if (dados.complemento() != null) {
             this.complemento = dados.complemento();
         }
     }
-
 }

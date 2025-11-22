@@ -1,11 +1,7 @@
 package com.medpro.medpro.repository;
 
+import com.medpro.medpro.model.entity.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.medpro.medpro.model.entity.Paciente;
-
-
-
-public interface PacienteRepository extends JpaRepository<Paciente, Long>{
-    
+public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 }

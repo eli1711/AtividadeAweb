@@ -1,0 +1,11 @@
+-- TABELA CONSULTAS
+CREATE TABLE consultas (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    paciente_id BIGINT NOT NULL,
+    medico_id BIGINT NOT NULL,
+    dataHoraConsulta DATETIME NOT NULL,
+    status ENUM('AGENDADA', 'REALIZADA', 'CANCELADA') DEFAULT 'AGENDADA',
+    PRIMARY KEY(id),
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE,
+    FOREIGN KEY (medico_id) REFERENCES medicos(id) ON DELETE CASCADE
+);
