@@ -1,0 +1,66 @@
+[
+    {
+        "nome": "Dr. Carlos Mendes",
+        "email": "carlos.mendes@clinica.com",
+        "telefone": "11987654321",
+        "crm": "123456",
+        "especialidade": "CARDIOLOGIA",
+        "endereco": {
+            "logradouro": "Avenida Paulista",
+            "bairro": "Bela Vista",
+            "cep": "01310100",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "1000",
+            "complemento": "Sala 501"
+        }
+    },
+    {
+        "nome": "Dra. Ana Paula Silva",
+        "email": "ana.silva@clinica.com",
+        "telefone": "11999887766",
+        "crm": "654321",
+        "especialidade": "DERMATOLOGIA",
+        "endereco": {
+            "logradouro": "Rua Augusta",
+            "bairro": "Consolação",
+            "cep": "01305000",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "500",
+            "complemento": "Consultório 302"
+        }
+    },
+    {
+        "nome": "Dra. Beatriz Santos",
+        "email": "beatriz.santos@hospital.com",
+        "telefone": "11955443322",
+        "crm": "789012",
+        "especialidade": "GINECOLOGIA",
+        "endereco": {
+            "logradouro": "Rua Oscar Freire",
+            "bairro": "Jardins",
+            "cep": "01426000",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "2000",
+            "complemento": "Andar 3"
+        }
+    },
+    {
+        "nome": "Dr. Roberto Lima",
+        "email": "roberto.lima@ortopedia.com",
+        "telefone": "11944332211",
+        "crm": "345678",
+        "especialidade": "ORTOPEDIA",
+        "endereco": {
+            "logradouro": "Avenida Brigadeiro Faria Lima",
+            "bairro": "Pinheiros",
+            "cep": "05426000",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "3000",
+            "complemento": "Torre B"
+        }
+    }
+]

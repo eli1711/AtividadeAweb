@@ -22,7 +22,7 @@
 
         .container {
             width: 100%;
-            max-width: 960px;
+            max-width: 1200px;
             background: #ffffff;
             border-radius: 12px;
             padding: 24px 28px;
@@ -64,8 +64,7 @@
             color: #374151;
         }
 
-        input,
-        select {
+        input, select {
             padding: 8px 10px;
             border-radius: 8px;
             border: 1px solid #d1d5db;
@@ -74,8 +73,7 @@
             background: #ffffff;
         }
 
-        input:focus,
-        select:focus {
+        input:focus, select:focus {
             border-color: #2563eb;
             box-shadow: 0 0 0 1px rgba(37,99,235,0.25);
         }
@@ -103,6 +101,17 @@
             transform: translateY(0);
             box-shadow: none;
             opacity: 0.9;
+        }
+
+        .btn-cancelar {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-top: 0;
+        }
+
+        .btn-cancelar:hover {
+            box-shadow: 0 4px 12px rgba(220,38,38,0.35);
         }
 
         hr {
@@ -175,6 +184,82 @@
             color: #6b7280;
         }
 
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge.agendada {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge.cancelada {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge.realizada {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            margin-bottom: 16px;
+        }
+
+        .modal-header h3 {
+            font-size: 18px;
+            color: #1f2933;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+            box-shadow: none;
+            transform: none;
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 16px;
@@ -183,13 +268,21 @@
             form {
                 grid-template-columns: 1fr;
             }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Agendar Consulta</h1>
-    <p class="subtitle">Preencha os dados abaixo para registrar uma nova consulta.</p>
+    <h1>🏥 Sistema de Consultas Médicas</h1>
+    <p class="subtitle">Gerencie agendamentos e cancelamentos de consultas.</p>
 
     <!-- Mensagens de sucesso/erro -->
     <div th:if="${message}" class="message success">
@@ -200,37 +293,39 @@
         <p th:text="${error}"></p>
     </div>
 
+    <!-- Formulário de Agendamento -->
+    <h2>📅 Agendar Nova Consulta</h2>
     <form th:action="@{/consultas/form}" method="post">
         <div class="form-group">
-            <label for="pacienteId">Paciente ID</label>
+            <label for="pacienteId">Paciente ID *</label>
             <input type="number" id="pacienteId" name="pacienteId" required>
         </div>
 
         <div class="form-group">
-            <label for="dataHoraConsulta">Data e Hora da Consulta</label>
-            <!-- datetime-local manda yyyy-MM-dd'T'HH:mm -->
+            <label for="dataHoraConsulta">Data e Hora *</label>
             <input type="datetime-local" id="dataHoraConsulta" name="dataHoraConsulta" required>
         </div>
 
         <div class="form-group">
             <label for="medicoId">Médico (opcional)</label>
             <select name="medicoId" id="medicoId">
-                <option value="">Escolher Médico</option>
+                <option value="">Escolher automaticamente</option>
                 <th:block th:each="medico : ${medicosDisponiveis}">
                     <option th:value="${medico.id}" th:text="${medico.nome}"></option>
                 </th:block>
             </select>
         </div>
 
-        <button type="submit">Agendar</button>
+        <button type="submit">Agendar Consulta</button>
     </form>
 
     <hr>
 
-    <h2>Consultas agendadas</h2>
+    <!-- Lista de Consultas -->
+    <h2>📋 Consultas Registradas</h2>
 
     <div th:if="${#lists.isEmpty(consultas)}">
-        <p class="empty-text">Nenhuma consulta agendada até o momento.</p>
+        <p class="empty-text">Nenhuma consulta registrada até o momento.</p>
     </div>
 
     <table th:if="${!#lists.isEmpty(consultas)}">
@@ -241,6 +336,8 @@
             <th>Médico</th>
             <th>Data/Hora</th>
             <th>Status</th>
+            <th>Motivo</th>
+            <th>Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -249,10 +346,75 @@
             <td th:text="${consulta.paciente.nome}"></td>
             <td th:text="${consulta.medico.nome}"></td>
             <td th:text="${#temporals.format(consulta.dataHoraConsulta, 'dd/MM/yyyy HH:mm')}"></td>
-            <td th:text="${consulta.status}"></td>
+            <td>
+                <span class="badge" 
+                      th:classappend="${consulta.status.name() == 'AGENDADA' ? 'agendada' : (consulta.status.name() == 'CANCELADA' ? 'cancelada' : 'realizada')}"
+                      th:text="${consulta.status}">
+                </span>
+            </td>
+            <td th:text="${consulta.motivoCancelamento != null ? consulta.motivoCancelamento.descricao : '-'}"></td>
+            <td>
+                <button class="btn-cancelar" 
+                        th:if="${consulta.status.name() == 'AGENDADA'}"
+                        th:onclick="'abrirModalCancelamento(' + ${consulta.id} + ')'">
+                    Cancelar
+                </button>
+                <span th:if="${consulta.status.name() != 'AGENDADA'}" style="color: #9ca3af; font-size: 12px;">
+                    -
+                </span>
+            </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<!-- Modal de Cancelamento -->
+<div id="modalCancelamento" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>❌ Cancelar Consulta</h3>
+            <p class="subtitle" style="margin-top: 4px;">Informe o motivo do cancelamento.</p>
+        </div>
+
+        <form th:action="@{/consultas/cancelar}" method="post">
+            <input type="hidden" id="consultaIdModal" name="consultaId">
+            
+            <div class="form-group">
+                <label for="motivo">Motivo do Cancelamento *</label>
+                <select name="motivo" id="motivo" required>
+                    <option value="">Selecione um motivo</option>
+                    <th:block th:each="motivo : ${motivosCancelamento}">
+                        <option th:value="${motivo.name()}" th:text="${motivo.descricao}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                <button type="submit" class="btn-cancelar">Confirmar Cancelamento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function abrirModalCancelamento(consultaId) {
+        document.getElementById('consultaIdModal').value = consultaId;
+        document.getElementById('modalCancelamento').classList.add('active');
+    }
+
+    function fecharModal() {
+        document.getElementById('modalCancelamento').classList.remove('active');
+        document.getElementById('consultaIdModal').value = '';
+        document.getElementById('motivo').value = '';
+    }
+
+    // Fecha modal ao clicar fora
+    document.getElementById('modalCancelamento').addEventListener('click', function(e) {
+        if (e.target === this) {
+            fecharModal();
+        }
+    });
+</script>
 </body>
 </html>

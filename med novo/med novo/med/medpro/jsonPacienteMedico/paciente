@@ -1,0 +1,47 @@
+[
+    {
+        "nome": "João da Silva",
+        "email": "joao.silva@email.com",
+        "telefone": "11987654321",
+        "cpf": "12345678901",
+        "endereco": {
+            "logradouro": "Rua das Flores",
+            "bairro": "Centro",
+            "cep": "01310100",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "123",
+            "complemento": "Apto 45"
+        }
+    },
+    {
+        "nome": "Maria Santos",
+        "email": "maria.santos@gmail.com",
+        "telefone": "11999887766",
+        "cpf": "98765432100",
+        "endereco": {
+            "logradouro": "Avenida Paulista",
+            "bairro": "Bela Vista",
+            "cep": "01311000",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "1000",
+            "complemento": "Torre A"
+        }
+    },
+    {
+        "nome": "Carlos Oliveira",
+        "email": "carlos.oliveira@hotmail.com",
+        "telefone": "11955443322",
+        "cpf": "11122233344",
+        "endereco": {
+            "logradouro": "Rua Augusta",
+            "bairro": "Consolação",
+            "cep": "01305000",
+            "cidade": "São Paulo",
+            "uf": "SP",
+            "numero": "500",
+            "complemento": "Casa"
+        }
+    }
+]

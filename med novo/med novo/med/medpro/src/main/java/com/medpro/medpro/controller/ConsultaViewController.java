@@ -1,9 +1,12 @@
 package com.medpro.medpro.controller;
 
+import com.medpro.medpro.enums.MotivoCancelamento;
 import com.medpro.medpro.model.DTO.DadosAgendamentoConsulta;
+import com.medpro.medpro.model.DTO.DadosCancelamentoConsulta;
 import com.medpro.medpro.repository.ConsultaRepository;
 import com.medpro.medpro.repository.MedicoRepository;
 import com.medpro.medpro.service.AgendamentoConsultaService;
+import com.medpro.medpro.service.CancelamentoConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,9 @@ public class ConsultaViewController {
     @Autowired
     private AgendamentoConsultaService agendamentoConsultaService;
 
+    @Autowired
+    private CancelamentoConsultaService cancelamentoConsultaService;
+
     // GET /consultas/form  -> carrega o formulário + lista de consultas
     @GetMapping("/form")
     public String mostrarFormularioAgendamento(Model model,
@@ -34,6 +40,7 @@ public class ConsultaViewController {
 
         model.addAttribute("medicosDisponiveis", medicoRepository.findAllByAtivoTrue());
         model.addAttribute("consultas", consultaRepository.findAll());
+        model.addAttribute("motivosCancelamento", MotivoCancelamento.values());
 
         if (message != null) {
             model.addAttribute("message", message);
@@ -45,7 +52,7 @@ public class ConsultaViewController {
         return "agendar-consulta";
     }
 
-    // POST /consultas/form -> processa o formulário
+    // POST /consultas/form -> processa o formulário de agendamento
     @PostMapping("/form")
     public String processarFormulario(
             @RequestParam("pacienteId") Long pacienteId,
@@ -61,6 +68,25 @@ public class ConsultaViewController {
             agendamentoConsultaService.agendar(dados);
 
             redirectAttributes.addAttribute("message", "Consulta agendada com sucesso!");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addAttribute("error", e.getMessage());
+        }
+
+        return "redirect:/consultas/form";
+    }
+
+    // POST /consultas/cancelar -> processa o cancelamento
+    @PostMapping("/cancelar")
+    public String processarCancelamento(
+            @RequestParam("consultaId") Long consultaId,
+            @RequestParam("motivo") MotivoCancelamento motivo,
+            RedirectAttributes redirectAttributes) {
+
+        try {
+            DadosCancelamentoConsulta dados = new DadosCancelamentoConsulta(consultaId, motivo);
+            cancelamentoConsultaService.cancelar(dados);
+
+            redirectAttributes.addAttribute("message", "Consulta cancelada com sucesso!");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addAttribute("error", e.getMessage());
         }

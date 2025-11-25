@@ -1,9 +1,11 @@
 package com.medpro.medpro.controller;
 
 import com.medpro.medpro.model.DTO.DadosAgendamentoConsulta;
+import com.medpro.medpro.model.DTO.DadosCancelamentoConsulta;
 import com.medpro.medpro.model.entity.Consulta;
 import com.medpro.medpro.repository.ConsultaRepository;
 import com.medpro.medpro.service.AgendamentoConsultaService;
+import com.medpro.medpro.service.CancelamentoConsultaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,10 @@ public class ConsultaController {
     @Autowired
     private AgendamentoConsultaService agendamentoConsultaService;
 
-    // GET /consultas → lista todas as consultas (pra testar)
+    @Autowired
+    private CancelamentoConsultaService cancelamentoConsultaService;
+
+    // GET /consultas → lista todas as consultas
     @GetMapping
     public List<Consulta> listarConsultas() {
         return consultaRepository.findAll();
@@ -32,5 +37,17 @@ public class ConsultaController {
     @ResponseStatus(HttpStatus.CREATED)
     public void agendarConsulta(@RequestBody @Valid DadosAgendamentoConsulta dados) {
         agendamentoConsultaService.agendar(dados);
+    }
+
+    // DELETE /consultas/{id}/cancelar → cancelar consulta
+    @DeleteMapping("/{id}/cancelar")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelarConsulta(@PathVariable Long id, 
+                                  @RequestBody @Valid DadosCancelamentoConsulta dados) {
+        // Valida se o ID da URL corresponde ao ID do body
+        if (!id.equals(dados.consultaId())) {
+            throw new IllegalArgumentException("ID da consulta não corresponde");
+        }
+        cancelamentoConsultaService.cancelar(dados);
     }
 }

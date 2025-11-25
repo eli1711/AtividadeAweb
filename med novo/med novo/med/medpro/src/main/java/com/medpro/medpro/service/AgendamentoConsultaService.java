@@ -1,22 +1,24 @@
 package com.medpro.medpro.service;
 
-import com.medpro.medpro.enums.StatusPaciente;
-import com.medpro.medpro.model.DTO.DadosAgendamentoConsulta;
-import com.medpro.medpro.model.entity.Consulta;
-import com.medpro.medpro.model.entity.Medico;
-import com.medpro.medpro.model.entity.Paciente;
-import com.medpro.medpro.model.entity.Consulta.StatusConsulta;
-import com.medpro.medpro.repository.ConsultaRepository;
-import com.medpro.medpro.repository.MedicoRepository;
-import com.medpro.medpro.repository.PacienteRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.medpro.medpro.enums.StatusPaciente;
+import com.medpro.medpro.model.DTO.DadosAgendamentoConsulta;
+import com.medpro.medpro.model.entity.Consulta;
+import com.medpro.medpro.model.entity.Consulta.StatusConsulta;
+import com.medpro.medpro.model.entity.Medico;
+import com.medpro.medpro.model.entity.Paciente;
+import com.medpro.medpro.repository.ConsultaRepository;
+import com.medpro.medpro.repository.MedicoRepository;
+import com.medpro.medpro.repository.PacienteRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class AgendamentoConsultaService {
